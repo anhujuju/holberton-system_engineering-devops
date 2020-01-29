@@ -1,2 +1,2 @@
-ºi/bin/bash
-ls -la . .. /boot. 
+#!/bin/bash
+cd .. 
