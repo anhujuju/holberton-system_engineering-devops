@@ -1,1 +1,1 @@
-This is project of shellºThis is project of shellº
+This is project of shell
