@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# print multiple strings.
+while :;
+do
+	trap "echo I am invincible!!!" SIGTERM
+	echo To inifinity and beyond
+	sleep 2
+done
