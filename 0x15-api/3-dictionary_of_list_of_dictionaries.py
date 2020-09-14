@@ -1,18 +1,30 @@
 #!/usr/bin/python3
-
+"""
+Using what you did in the task #0, extend your
+Python script to export data in the JSON format
+"""
 import json
-import requests as r
+import requests
+from sys import argv
 
 
-if __name__ == '__main__':
-    url = "https://jsonplaceholder.typicode.com/"
-    user = r.get(url + "users").json()
-
-    with open("todo_all_employees.json", "w") as jsonfile:
-        json.dump({usr.get("id"): [{
-            "username": usr.get("username"),
-            "task": e.get("title"),
-            "completed": e.get("completed")
-        } for e in r.get(url + "todos",
-                         params={"userId": usr.get("id")}).json()]
-            for usr in user}, jsonfile)
+if __name__ == "__main__":
+    api_url = 'https://jsonplaceholder.typicode.com'
+    users_url = '{}/users'.format(api_url)
+    r_users = requests.get(users_url).json()
+    users_dict = {}
+    for user in r_users:
+        user_id = user.get("id")
+        todos_user_url = '{}/todos?userId={}'.format(api_url, user_id)
+        r_todos_user = requests.get(todos_user_url).json()
+        tasks_list = []
+        for task in r_todos_user:
+            task_dict = {
+                "username": user.get("username"),
+                "task": task.get("title"),
+                "completed": task.get("completed")
+            }
+            tasks_list.append(task_dict)
+        users_dict[user_id] = tasks_list
+        with open('todo_all_employees.json', 'w') as jsonfile:
+            json.dump(users_dict, jsonfile)
